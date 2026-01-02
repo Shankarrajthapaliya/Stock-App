@@ -14,45 +14,42 @@ namespace web.Repo
 {
     public class CommentRepository : ICommentRepo
     {
-        private readonly ApplicationDBContext _context ;
+        private readonly ApplicationDBContext _context;
 
         public CommentRepository(ApplicationDBContext context)
         {
-            _context = context ;
+            _context = context;
         }
 
-
-        public async Task<Comment?> CreateComment(CreateCommentDTO dto)
+        public async Task<List<Comment>> GetAllAsync()
         {
-            var stockSymbol = dto.Symbol ;
-            var comment = dto.Creation();
-            
-
-          var stock =  await _context.Stocks.FirstOrDefaultAsync(s => s.Symbol == stockSymbol);
-
-          if (stock ==null) return null; 
-            comment.StockId = stock.Id ;
-          _context.Comments.Add(comment);
-            _context.SaveChanges();
-
-            
-            return comment ;
+            return await _context.Comments
+                .Include(c => c.Stock)
+                .ToListAsync();
         }
 
-        public async Task<List<CommentDTO>> GetAllComments()
+        public async Task<Comment?> GetByIdAsync(int id)
         {
-            var comments = await  _context.Comments.Include(s=> s.Stock).Select(s => s.toCommentDTO()).ToListAsync();
-
-            return comments ;
+            return await _context.Comments
+                .Include(c => c.Stock)
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<CommentDTO?> GetCommentByID(int id)
+        public async Task<Comment> AddAsync(Comment comment)
         {
-            var comment = await _context.Comments.Include(s => s.Stock).FirstOrDefaultAsync(s => s.Id == id);
-            if(comment==null) return null;
-         
-            return   comment.toCommentDTO();
+            _context.Comments.Add(comment);
+            await _context.SaveChangesAsync();
+            return comment;
+        }
 
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var comment = await _context.Comments.FindAsync(id);
+            if (comment is null) return false;
+
+            _context.Comments.Remove(comment);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

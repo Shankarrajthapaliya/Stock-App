@@ -12,15 +12,20 @@ namespace web.Interface
     {
         public  Task<List<Stock>> GetAllAsync(QueryObject query);
 
-        public Task<StockDTO?> GetById(int id);
+        public Task<Stock?> GetById(int id);
+
+       
 
         public Task<IEnumerable<StockDTO>> GetByIndustry(string industry);
 
         public Task<Stock> CreateStock(CreateStockDTO stockToCreate);
 
-        public Task<StockDTO?> UpdateStock(int id, CreateStockDTO stockToUpdate);
+        public Task<Stock?> UpdateStock(int id, CreateStockDTO stockToUpdate);
 
-         public  Task<string?> DeleteStockById(int id);
+         public  Task<bool> DeleteStockById(int id);
+
+         Task<Stock?> GetBySymbolAsync(string symbol);
+
       
     }
 }

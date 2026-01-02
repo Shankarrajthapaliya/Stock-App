@@ -31,16 +31,16 @@ namespace web.Repo
             return stock; 
         }
 
-        public async Task<string?> DeleteStockById(int id)
+        public async Task<bool> DeleteStockById(int id)
         {
           var stocks = await _context.Stocks.FirstOrDefaultAsync(s => s.Id == id);
             if (stocks == null)
             {
-                return null;
+                return false;
             }
             _context.Stocks.Remove(stocks);
            await _context.SaveChangesAsync();
-           return "Success";
+           return true;
         }
 
         public async Task<List<Stock>> GetAllAsync(QueryObject query)
@@ -62,29 +62,25 @@ namespace web.Repo
 
         }
 
-        public async Task<StockDTO?> GetById(int id)
+        public async Task<Stock?> GetById(int id)
         {
             var stockById = await _context.Stocks.Include(s => s.Comments).FirstOrDefaultAsync(s => s.Id == id);
             if (stockById == null)
             {
                 return null ;
             }
-            var stockToSend = stockById.toStockDTO();
-
             
-            return stockToSend;
+            return stockById;
         }
 
         public async Task<IEnumerable<StockDTO>> GetByIndustry(string industry)
         {
-              var getByIndustry = await _context.Stocks.ToListAsync();
-         var returnIndustry = getByIndustry.Where(s => s.Industry == industry).Select(s => s.toStockDTO());
-        
-           
-            return returnIndustry;
+              var getByIndustry = await _context.Stocks.Include(c => c.Comments).ToListAsync();
+              var returnByIndustry = getByIndustry.Where(s => s.Industry == industry).Select(s => s.toStockDTO())  ;
+       return returnByIndustry  ;
         }
 
-        public async Task<StockDTO?> UpdateStock(int id, CreateStockDTO stockToUpdate)
+        public async Task<Stock?> UpdateStock(int id, CreateStockDTO stockToUpdate)
         {
             var toUpdate = await _context.Stocks.FindAsync(id);
     if(toUpdate == null)
@@ -100,15 +96,19 @@ namespace web.Repo
 
             await _context.SaveChangesAsync();
 
-           var updatedStockDTO = toUpdate.toStockDTO();
+         
 
-           return updatedStockDTO;
+           return toUpdate;
 
         
 
 
         }
-    
+    public async Task<Stock?> GetBySymbolAsync(string symbol)
+{
+    return await _context.Stocks.FirstOrDefaultAsync(s => s.Symbol == symbol);
+}
+
             
         }
     }

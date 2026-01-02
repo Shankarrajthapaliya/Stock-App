@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using web.Interface;
 using web.Models.Data;
 using web.Repo;
+using web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,9 @@ options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")
 builder.Services.AddScoped<IStockRepo,StockRepository>();
 
 builder.Services.AddScoped<ICommentRepo, CommentRepository>();
+
+builder.Services.AddScoped<IStockService, StockService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
 //builder.Services.AddControllers();
 
 var app = builder.Build();

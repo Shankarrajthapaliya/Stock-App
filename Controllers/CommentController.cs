@@ -15,46 +15,45 @@ namespace web.Controllers
     [Route("api/comment")]
     public class CommentController : ControllerBase
     {
-        private readonly ICommentRepo _commentRepo ;
+        private readonly ICommentService _commentService;
 
-        public CommentController(ICommentRepo commentRepo)
+        public CommentController(ICommentService commentService)
         {
-            _commentRepo = commentRepo ;
-        }
-       
-       [HttpGet]
-       public async Task<IActionResult> GetAll()
-        {
-          var comments =   await _commentRepo.GetAllComments();
-
-          return Ok(comments);
+            _commentService = commentService;
         }
 
         [HttpGet]
-        [Route("{id:int}")]
-
-        public async Task<IActionResult> GetById( int id)
+        public async Task<IActionResult> GetAll()
         {
-           var result =  await _commentRepo.GetCommentByID(id);
+            var result = await _commentService.GetAllAsync();
+            return Ok(result);
+        }
 
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            var result = await _commentService.GetByIdAsync(id);
+            if (result is null) return NotFound();
             return Ok(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateComment(CreateCommentDTO dTOtoCreate)
+        public async Task<IActionResult> Create([FromBody] CreateCommentDTO dto)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            if (!ModelState.IsValid)
-    {
-         return BadRequest(ModelState);
-    }
-          var newComment = await _commentRepo.CreateComment(dTOtoCreate);
-           if (newComment == null) { return NotFound();}
+            var created = await _commentService.CreateAsync(dto);
+            if (created is null) return NotFound("Stock symbol not found.");
 
-           return CreatedAtAction(nameof(GetById), new {id = newComment.Id}, newComment.toCommentDTO());
-
-
-
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created.toCommentDTO());
         }
-}
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            var ok = await _commentService.DeleteAsync(id);
+            if (!ok) return NotFound();
+            return NoContent();
+        }
+    }
 }

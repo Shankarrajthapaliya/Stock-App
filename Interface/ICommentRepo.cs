@@ -11,10 +11,9 @@ namespace web.Interface
    
     public interface ICommentRepo 
     {
-        public Task<List<CommentDTO>> GetAllComments();
-
-        public Task<Comment?> CreateComment(CreateCommentDTO dto);
-
-        public Task<CommentDTO?> GetCommentByID(int id);
+        Task<List<Comment>> GetAllAsync();
+        Task<Comment?> GetByIdAsync(int id);
+        Task<Comment> AddAsync(Comment comment);
+        Task<bool> DeleteAsync(int id);
     }
 }
