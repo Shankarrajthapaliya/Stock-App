@@ -10,6 +10,7 @@ using web.Data;
 using web.Helper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using web.Seed;
 
 
 
@@ -17,8 +18,8 @@ using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.Configure<SeedOptions>(builder.Configuration.GetSection("Seed"));
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -117,6 +118,11 @@ builder.Services.AddScoped<ICommentService, CommentService>();
 //builder.Services.AddControllers();
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await IdentitySeeder.SeedAsync(services);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -129,7 +135,7 @@ app.UseAuthorization();
 
 app.UseHttpsRedirection();
 app.MapControllers();
-app.Run();
+app.Run("http://localhost:5055");
 
 
 

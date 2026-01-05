@@ -41,13 +41,14 @@ namespace web.Controllers
          var user = new IdentityUser();
          user.UserName = dto.UserName;
          user.Email = dto.Email;
-         
+        
         var result =  await _userManager.CreateAsync(user, dto.Password );
           if (!result.Succeeded)
             {
                 
                 return BadRequest(result.Errors.Select(e => e.Description));
             }
+             await _userManager.AddToRoleAsync(user, "User");
        
        return Ok(new { message = "User registered successfully." });
 
