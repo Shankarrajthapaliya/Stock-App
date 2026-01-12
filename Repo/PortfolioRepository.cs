@@ -35,7 +35,7 @@ namespace web.Repo
                  StockID = stock.Id
 
              });
-              _context.SaveChanges() ;
+           await   _context.SaveChangesAsync() ;
              
              return stock ;
              

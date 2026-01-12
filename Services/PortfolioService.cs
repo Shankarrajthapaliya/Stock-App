@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR.Protocol;
 using web.DTO;
@@ -22,11 +23,11 @@ namespace web.Services
             _usermanager = usermanager;
         }
 
-        public  Task<Stock> AddStock(AddtoPortfolioDTO dto, string userID)
+        public  async Task<Stock> AddStock(AddtoPortfolioDTO dto, string userID)
         {
-          var stock =  _repo.AddStock(dto, userID); 
+          var stock =  await _repo.AddStock(dto, userID); 
 
-         var userPresent = _usermanager.FindByIdAsync(userID);
+         var userPresent = await _usermanager.FindByIdAsync(userID);
 
          if (userPresent == null)
             {
