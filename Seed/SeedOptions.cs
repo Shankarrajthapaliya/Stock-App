@@ -10,10 +10,14 @@ namespace web.Seed
          public string AdminEmail { get; set; } = string.Empty;
         public string AdminPassword { get; set; } = string.Empty;
 
-        public string WorkerEmail { get; set; } = string.Empty;
-        public string WorkerPassword { get; set; } = string.Empty;
+        public string EmployeeEmail { get; set; } = string.Empty;
+        public string EmployeePassword { get; set; } = string.Empty;
 
         public string UserEmail { get; set; } = string.Empty;
         public string UserPassword { get; set; } = string.Empty;
+         public string AdminOwnerEmail { get; set; } = string.Empty;
+        public string AdminOwnerPassword { get; set; } = string.Empty;
+
+        
     }
 }

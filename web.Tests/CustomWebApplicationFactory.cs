@@ -7,7 +7,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using web.Data;
 using web.Models.Data;
 using web.Seed;
 
@@ -50,8 +49,6 @@ namespace web.Tests
                 services.RemoveAll(typeof(DbContextOptions<ApplicationDBContext>));
                 services.RemoveAll(typeof(ApplicationDBContext));
 
-                services.RemoveAll(typeof(DbContextOptions<AppIdentityDbContext>));
-                services.RemoveAll(typeof(AppIdentityDbContext));
 
                 // ✅ Create TWO independent SQLite in-memory DBs
                 _appConnection = new SqliteConnection("DataSource=:memory:");
@@ -63,11 +60,8 @@ namespace web.Tests
                 // App DB (Stocks/Comments)
                 services.AddDbContext<ApplicationDBContext>(options =>
                     options.UseSqlite(_appConnection));
-
-                // Identity DB (AspNetUsers/AspNetRoles/etc)
-                services.AddDbContext<AppIdentityDbContext>(options =>
-                    options.UseSqlite(_identityConnection));
             });
+                
         }
 
         // DI is ready -> now we can create schema + seed safely
@@ -82,8 +76,6 @@ namespace web.Tests
             var appDb = services.GetRequiredService<ApplicationDBContext>();
             appDb.Database.EnsureCreated();
 
-            var identityDb = services.GetRequiredService<AppIdentityDbContext>();
-            identityDb.Database.EnsureCreated();
 
             // Seed identity AFTER schema exists
             IdentitySeeder.SeedAsync(services).GetAwaiter().GetResult();

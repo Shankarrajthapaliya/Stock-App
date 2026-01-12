@@ -65,7 +65,7 @@ namespace web.Controllers
             if (updated is null) return NotFound();
             return Ok(updated);
         }
-
+        [Authorize(Policy = "CanDeleteStock")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {

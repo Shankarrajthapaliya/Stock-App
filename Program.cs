@@ -6,11 +6,11 @@ using web.Models.Data;
 using web.Repo;
 using web.Services;
 using Microsoft.AspNetCore.Identity;
-using web.Data;
 using web.Helper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using web.Seed;
+using System.Security.Claims;
 
 
 
@@ -53,9 +53,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddDbContext<ApplicationDBContext> (options => 
 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDbContext<AppIdentityDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
-);
+
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
@@ -66,7 +64,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequiredLength = 6;
 })
-.AddEntityFrameworkStores<AppIdentityDbContext>()
+.AddEntityFrameworkStores<ApplicationDBContext>()
 .AddDefaultTokenProviders();
 
 var jwtSection = builder.Configuration.GetSection("Jwt");
@@ -104,7 +102,11 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
-
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("CanDeleteStock", policy =>
+        policy.RequireClaim("permission", "delete:stock"));
+});
 
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
@@ -112,9 +114,11 @@ builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IStockRepo,StockRepository>();
 
 builder.Services.AddScoped<ICommentRepo, CommentRepository>();
-
+builder.Services.AddScoped<IPortfolioRepo,PortfolioRepository>();
 builder.Services.AddScoped<IStockService, StockService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<IPortfolioService, PortfolioService>();
+
 //builder.Services.AddControllers();
 
 var app = builder.Build();
@@ -135,8 +139,9 @@ app.UseAuthorization();
 
 app.UseHttpsRedirection();
 app.MapControllers();
-app.Run("http://localhost:5055");
+app.Run();
 
+public partial class Program(); 
 
 
 
