@@ -19,14 +19,14 @@ namespace web.Tests
 
     public StocksEndpointsTests(CustomWebApplicationFactory factory)
     {
-        // CreateClient() gives us an HttpClient that calls the in-memory API server.
+      
         _client = factory.CreateClient();
     }
 
     [Fact]
     public async Task Post_CreateStock_WithoutToken_Returns401()
     {
-        // Arrange: build a valid DTO payload
+   
         var dto = new CreateStockDTO
         {
             CompanyName = "Test Company",
@@ -37,10 +37,10 @@ namespace web.Tests
             Purchase = 10.5m
         };
 
-        // Act: call a protected endpoint WITHOUT Authorization header
+        
         var response = await _client.PostAsJsonAsync("/api/stock", dto);
 
-        // Assert: middleware blocks us before controller runs
+        
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
@@ -54,26 +54,22 @@ namespace web.Tests
             Password = "User123!"
         };
 
-        // This assumes your login endpoint is POST /api/auth/login
+
         var loginResponse = await _client.PostAsJsonAsync("/api/auth/login", loginDto);
 
-        // If login fails, this test should fail loudly.
+      
         Assert.Equal(HttpStatusCode.OK, loginResponse.StatusCode);
 
-        // Example expected login response:
-        // { "token": "eyJhbGciOi..." }
-        // Adjust property names if your API returns different shape.
+       
         var loginPayload = await loginResponse.Content.ReadFromJsonAsync<LoginResponse>();
         Assert.NotNull(loginPayload);
         Assert.False(string.IsNullOrWhiteSpace(loginPayload!.Token));
 
-        // Attach JWT as Bearer token:
+    
         _client.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue("Bearer", loginPayload.Token);
 
-        // -----------------------------------------------------------
-        // STEP 2: Call the protected stock creation endpoint
-        // -----------------------------------------------------------
+    
         var dto = new CreateStockDTO
         {
             CompanyName = "Auth Company",
@@ -86,15 +82,7 @@ namespace web.Tests
 
         var response = await _client.PostAsJsonAsync("/api/stock", dto);
 
-        // -----------------------------------------------------------
-        // STEP 3: Assert
-        // -----------------------------------------------------------
 
-        // Depending on your controller implementation:
-        // - Some return 201 Created
-        // - Some return 200 OK
-        //
-        // Pick the one your API currently does.
         Assert.True(
             response.StatusCode == HttpStatusCode.Created ||
             response.StatusCode == HttpStatusCode.OK,
@@ -102,10 +90,7 @@ namespace web.Tests
         );
     }
 
-    /// <summary>
-    /// Helper type for parsing login response JSON.
-    /// If your API returns different fields, change this class accordingly.
-    /// </summary>
+  
     private sealed class LoginResponse
     {
         public string Token { get; set; } = string.Empty;
