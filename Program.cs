@@ -100,7 +100,6 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddAuthorization();
 
 builder.Services.AddAuthorization(options =>
 {
@@ -125,7 +124,10 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    await IdentitySeeder.SeedAsync(services);
+    if (!app.Environment.IsEnvironment("Testing"))
+    {
+        await IdentitySeeder.SeedAsync(services);
+    }
 }
 
 // Configure the HTTP request pipeline.
@@ -137,7 +139,10 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication(); 
 app.UseAuthorization();
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsEnvironment("Testing"))
+{
+    app.UseHttpsRedirection();
+}
 app.MapControllers();
 app.Run();
 

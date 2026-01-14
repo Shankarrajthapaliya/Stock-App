@@ -32,9 +32,9 @@ namespace web.Tests
             CompanyName = "Test Company",
             Symbol = "TST",
             Industry = "Testing",
-            LastDiv = 1.23m,
+            LastDiv = 123,
             MarketCap = 1000000,
-            Purchase = 10.5m
+            Purchase = 10500
         };
 
         
@@ -45,52 +45,63 @@ namespace web.Tests
     }
 
     [Fact]
-    public async Task Post_CreateStock_WithValidToken_ReturnsSuccess()
+public async Task Post_CreateStock_WithValidToken_ReturnsSuccess()
+{
+    // --- LOGIN ---
+    var loginDto = new LogInDTO
     {
-       
-        var loginDto = new LogInDTO
-        {
-            Username = "user@local.test",
-            Password = "User123!"
-        };
+        Username = "admin@local.test",
+        Password = "Admin123!"
+    };
 
+    var loginResponse = await _client.PostAsJsonAsync("/api/auth/login", loginDto);
+    Assert.Equal(HttpStatusCode.OK, loginResponse.StatusCode);
 
-        var loginResponse = await _client.PostAsJsonAsync("/api/auth/login", loginDto);
+    var loginPayload = await loginResponse.Content.ReadFromJsonAsync<LoginResponse>();
+    Assert.NotNull(loginPayload);
+    Assert.False(string.IsNullOrWhiteSpace(loginPayload!.Token));
 
-      
-        Assert.Equal(HttpStatusCode.OK, loginResponse.StatusCode);
+    // --- DEBUG JWT ---
+    var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+    var jwt = handler.ReadJwtToken(loginPayload.Token);
 
-       
-        var loginPayload = await loginResponse.Content.ReadFromJsonAsync<LoginResponse>();
-        Assert.NotNull(loginPayload);
-        Assert.False(string.IsNullOrWhiteSpace(loginPayload!.Token));
+    Console.WriteLine("===== JWT DEBUG =====");
+    Console.WriteLine($"iss: {jwt.Issuer}");
+    Console.WriteLine($"aud: {string.Join(",", jwt.Audiences)}");
+    Console.WriteLine($"validFrom: {jwt.ValidFrom:o}");
+    Console.WriteLine($"validTo:   {jwt.ValidTo:o}");
+    Console.WriteLine("=====================");
 
-    
-        _client.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue("Bearer", loginPayload.Token);
+    // --- ATTACH TOKEN ---
+    _client.DefaultRequestHeaders.Authorization =
+        new AuthenticationHeaderValue("Bearer", loginPayload.Token);
 
-    
-        var dto = new CreateStockDTO
-        {
-            CompanyName = "Auth Company",
-            Symbol = "AUTH",
-            Industry = "Testing",
-            LastDiv = 0.5m,
-            MarketCap = 555,
-            Purchase = 12.99m
-        };
+    // --- CALL PROTECTED ENDPOINT ---
+    var dto = new CreateStockDTO
+    {
+        CompanyName = "Auth Company",
+        Symbol = "AUTH",
+        Industry = "Testing",
+        LastDiv = 0.5m,
+        MarketCap = 555,
+        Purchase = 12.99m
+    };
 
-        var response = await _client.PostAsJsonAsync("/api/stock", dto);
+    var response = await _client.PostAsJsonAsync("/api/stock", dto);
 
+    // --- DEBUG AUTH FAILURE ---
+    Console.WriteLine("===== API RESPONSE =====");
+    Console.WriteLine($"StatusCode: {(int)response.StatusCode}");
+    Console.WriteLine($"WWW-Authenticate: {response.Headers.WwwAuthenticate}");
+    Console.WriteLine(await response.Content.ReadAsStringAsync());
+    Console.WriteLine("========================");
 
-        Assert.True(
-            response.StatusCode == HttpStatusCode.Created ||
-            response.StatusCode == HttpStatusCode.OK,
-            $"Expected 200 or 201 but got {(int)response.StatusCode}"
-        );
-    }
-
-  
+    Assert.True(
+        response.StatusCode == HttpStatusCode.Created ||
+        response.StatusCode == HttpStatusCode.OK,
+        $"Expected 200 or 201 but got {(int)response.StatusCode}"
+    );
+}
     private sealed class LoginResponse
     {
         public string Token { get; set; } = string.Empty;

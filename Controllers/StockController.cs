@@ -21,7 +21,7 @@ namespace web.Controllers
 
  [ApiController]
     [Route("api/stock")]
-    [Authorize]
+   
     public class StockController : ControllerBase
     {
         private readonly IStockService _stockService;
