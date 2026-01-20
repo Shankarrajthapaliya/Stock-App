@@ -489,3 +489,7 @@ secrets.json
 .vscode/
 .DS_Store
 *.log
+
+# React UI
+ui/node_modules
+ui/dist
