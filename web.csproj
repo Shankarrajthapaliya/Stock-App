@@ -22,5 +22,12 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.15.0" />
   </ItemGroup>
+  <ItemGroup>
+  <!-- Exclude test project files from the web project compilation-->
+  <Compile Remove="web.Tests/**" />
+  <Content Remove="web.Tests/**" />
+  <EmbeddedResource Remove="web.Tests/**"/>
+  <None Remove="web.Tests/**"/>
+  </ItemGroup>
 
 </Project>

@@ -44,7 +44,7 @@ namespace web.Seed
             await EnsureUserWithRoleAsync(userManager,
                 email: seedOptions.WorkerEmail,
                 password: seedOptions.WorkerPassword,
-                role: "Worker");
+                role: "Employee");
 
             await EnsureUserWithRoleAsync(userManager,
                 email: seedOptions.UserEmail,

@@ -8,7 +8,7 @@ using web.Models;
 
 namespace web.Controllers.DTO
 {
-    public class CreateStockDTO
+    public class CreateStockDTO : IValidatableObject
     {
       [Required]
         [MinLength(1,ErrorMessage ="At least 1 character")]
@@ -31,5 +31,14 @@ namespace web.Controllers.DTO
         [MinLength(1,ErrorMessage ="At least 20 characters")]
         [MaxLength(100, ErrorMessage ="No more than 2500 characters")]
     public string Industry { get; set; } = string.Empty ;
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+      if (Purchase < LastDiv)
+      {
+        yield return  new ValidationResult("Last Div can't be greater than Purchase amount", new[] {nameof(Purchase), nameof(LastDiv)});
+      }
+      
+        }
     }
 }
