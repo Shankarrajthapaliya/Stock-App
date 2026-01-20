@@ -19,16 +19,13 @@ namespace web.Controllers.DTO
         [MaxLength(100, ErrorMessage ="No more than 100 characters")]
     public string CompanyName { get; set; } = string.Empty;
    [Required]
-        [MinLength(1,ErrorMessage ="At least 1 character")]
-        [MaxLength(1000, ErrorMessage ="No more than 1000 characters")]
+ 
     public decimal Purchase { get; set; }
      [Required]
-        [MinLength(1,ErrorMessage ="At least 20 characters")]
-        [MaxLength(1000, ErrorMessage ="No more than 2500 characters")]
+       
     public decimal LastDiv { get; set; }
     [Required]
-        [MinLength(1,ErrorMessage ="At least 20 characters")]
-        [MaxLength(1000000, ErrorMessage ="No more than 2500 characters")]
+     
     public long MarketCap { get; set; }
    [Required]
         [MinLength(1,ErrorMessage ="At least 20 characters")]

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace web.Controllers
 
  [ApiController]
     [Route("api/stock")]
+    [Authorize]
     public class StockController : ControllerBase
     {
         private readonly IStockService _stockService;
@@ -43,8 +45,9 @@ namespace web.Controllers
             if (result is null) return NotFound();
             return Ok(result);
         }
-
+        
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create([FromBody] CreateStockDTO dto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
