@@ -16,7 +16,7 @@ namespace web.DTO
        
        public string Content {get; set;} = string.Empty;
        
-        public StockDTO? Stock {get; set;}
+        public CommentToStockDTO? Stock {get; set;}
         
         public DateTime CreatedOn {get; set;}
 

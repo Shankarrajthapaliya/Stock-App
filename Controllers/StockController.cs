@@ -21,7 +21,7 @@ namespace web.Controllers
 
  [ApiController]
     [Route("api/stock")]
-    [Authorize]
+   
     public class StockController : ControllerBase
     {
         private readonly IStockService _stockService;
@@ -47,7 +47,7 @@ namespace web.Controllers
         }
         
         [HttpPost]
-        [Authorize]
+      
         public async Task<IActionResult> Create([FromBody] CreateStockDTO dto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -65,7 +65,7 @@ namespace web.Controllers
             if (updated is null) return NotFound();
             return Ok(updated);
         }
-
+       
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {

@@ -38,6 +38,9 @@ namespace web.Services
 
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), 
           };
+          
+          var userClaims = await _userManager.GetClaimsAsync(user);
+          claims.AddRange(userClaims);     
 
           var roles = await _userManager.GetRolesAsync(user);
 
@@ -45,6 +48,8 @@ namespace web.Services
             {
                 claims.Add(new Claim (ClaimTypes.Role, role));
             }
+
+            
 
         var getBytes = Encoding.UTF8.GetBytes(_Jwt.Key); 
         var getSignKey = new SymmetricSecurityKey(getBytes);

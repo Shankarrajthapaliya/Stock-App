@@ -19,7 +19,7 @@ namespace web.Mappers
                Title = comment.Title,
                Content = comment.Content,
                CreatedOn = comment.CreatedOn,
-               Stock = comment.Stock?.toStockDTO()
+               Stock = comment.Stock?.CommentToStock()
                
                
 
