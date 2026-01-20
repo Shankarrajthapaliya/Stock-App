@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using web.DTO;
 using web.Interface;
 using web.Models;
@@ -39,6 +41,13 @@ namespace web.Repo
              
              return stock ;
              
+        }
+
+        public async Task<List<PortfolioItem>> GetPortfolio(string id)
+        {
+           var item =  await _context.Portfolios.Where(x => x.UserId == id).Include(x => x.stock).Include(x => x.User).OrderByDescending(x => x.StockID).ToListAsync();
+
+            return item;
         }
     }
 }

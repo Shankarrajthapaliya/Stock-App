@@ -47,7 +47,7 @@ namespace web.Controllers
         }
         
         [HttpPost]
-        [Authorize]
+      
         public async Task<IActionResult> Create([FromBody] CreateStockDTO dto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -65,7 +65,7 @@ namespace web.Controllers
             if (updated is null) return NotFound();
             return Ok(updated);
         }
-        [Authorize(Policy = "CanDeleteStock")]
+       
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {

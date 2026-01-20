@@ -44,6 +44,24 @@ namespace web.Controllers
             return Ok(stock);
         } 
         
+        [Authorize]
+        [HttpGet]
+     public async Task<IActionResult> GetMyPortfolio()
+        {
+              if (!ModelState.IsValid){
+                return BadRequest(ModelState);
+                }
+         var id = User.FindFirstValue(ClaimTypes.NameIdentifier) ; 
+         if(id == null)
+            {
+                return NotFound();
+            }
+         var item=   await _portfolioService.GetStock(id);
+
+
+            return Ok(item);
+        }
+
 
         
     }

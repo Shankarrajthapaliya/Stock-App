@@ -10,5 +10,6 @@ namespace web.Interface
     public interface IPortfolioRepo
     {
         public Task<Stock> AddStock(AddtoPortfolioDTO dto, string userID);
+       public Task<List<PortfolioItem>> GetPortfolio(string id);
     }
 }

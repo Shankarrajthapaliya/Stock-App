@@ -53,5 +53,24 @@ namespace web.Mappers
 
         }
 
+
+        public static CommentToStockDTO CommentToStock(this Stock stockModel)
+        {
+            CommentToStockDTO stocktoSend = new CommentToStockDTO();
+
+
+            stocktoSend.Symbol = stockModel.Symbol;
+           
+         
+          stocktoSend.CompanyName = stockModel.CompanyName;
+          stocktoSend.Purchase = stockModel.Purchase;
+           stocktoSend.LastDiv = stockModel.LastDiv;
+            stocktoSend.MarketCap = stockModel.MarketCap;
+              stocktoSend.Industry = stockModel.Industry;
+
+            return stocktoSend ;
+
+        }
+
     }
 }

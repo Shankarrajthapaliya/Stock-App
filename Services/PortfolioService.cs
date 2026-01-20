@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR.Protocol;
 using web.DTO;
 using web.Interface;
+using web.Mappers;
 using web.Models;
 using web.Repo;
 
@@ -34,6 +35,17 @@ namespace web.Services
                 return null;
             }
              return stock ;
+        }
+
+        public async Task<IEnumerable<PortfolioItemDTO>> GetStock(string id)
+        {
+            var result = await _repo.GetPortfolio(id);
+            
+           return result.Select(r => r.toPortfolioDTO());
+            
+
+
+           
         }
     }
 }

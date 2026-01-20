@@ -11,5 +11,8 @@ namespace web.Interface
     {
         
          public  Task<Stock> AddStock(AddtoPortfolioDTO dto, string userID) ;
+       public  Task<IEnumerable<PortfolioItemDTO>>  GetStock(string id);
+
+       
     }
 }
