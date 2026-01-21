@@ -15,5 +15,7 @@ namespace web.Interface
         Task<Comment?> GetByIdAsync(int id);
         Task<Comment> AddAsync(Comment comment);
         Task<bool> DeleteAsync(int id);
+      
+        Task<List<CommentDTO>> GetBySymbol(string symbol);
     }
 }

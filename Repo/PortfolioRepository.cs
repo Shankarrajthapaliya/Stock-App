@@ -27,7 +27,7 @@ namespace web.Repo
 
            if (stock == null)
             {
-                return null;
+                throw new InvalidOperationException("Stock not found");
             }
              
              

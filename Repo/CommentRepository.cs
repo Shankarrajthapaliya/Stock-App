@@ -51,5 +51,14 @@ namespace web.Repo
             await _context.SaveChangesAsync();
             return true;
         }
+
+      public async Task<List<CommentDTO>>GetBySymbol (string symbol)
+{
+    return await _context.Comments
+        .Where(c => c.Stock!.Symbol == symbol).Include(c => c.Stock).Select(x => x.toCommentDTO())
+        .ToListAsync();
+}
+
+        
     }
 }

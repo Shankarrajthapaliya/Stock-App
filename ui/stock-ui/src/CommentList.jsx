@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
 
 export default function CommentList() {
+  const { symbol } = useParams();             
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -11,7 +13,7 @@ export default function CommentList() {
         setLoading(true);
         setError("");
 
-        const response = await fetch("/api/comment");
+        const response = await fetch(`/api/comment/symbol/${symbol}`); 
 
         if (!response.ok) {
           throw new Error(
@@ -28,15 +30,19 @@ export default function CommentList() {
       }
     }
 
-    loadComments();
-  }, []);
+    if (symbol) loadComments();
+  }, [symbol]); 
 
-  if (loading) return <p>Loading comments...</p>;
+  if (loading) return <p>Loading comments for {symbol}...</p>;
   if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
 
   return (
     <div style={{ padding: 16 }}>
-      <h1>Comments</h1>
+      <h1>Comments for {symbol}</h1>
+
+      <p>
+        <Link to="/">← Back to Stocks</Link>
+      </p>
 
       {comments.length === 0 ? (
         <p>No comments found.</p>
@@ -46,28 +52,14 @@ export default function CommentList() {
             <tr>
               <th align="left">Title</th>
               <th align="left">Content</th>
-              <th align="left">Stocks</th>
             </tr>
           </thead>
 
           <tbody>
-            {comments.map((c, idx) => (
-              <tr key={idx}>
+            {comments.map((c) => (
+              <tr key={c.id}>
                 <td>{c.title}</td>
                 <td>{c.content}</td>
-                <td>
-                  {c.stock && c.stock.length > 0 ? (
-                    <ul>
-                      {c.stock.map((s) => (
-                        <li key={s.id ?? s.symbol}>
-                          {s.companyName}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <em>No stock</em>
-                  )}
-                </td>
               </tr>
             ))}
           </tbody>

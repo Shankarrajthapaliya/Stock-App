@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function StockList() {
-  const [stocks, setStocks] = useState([]);
+  const [stocks, setStocks] = useState([]);   
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -12,7 +13,6 @@ export default function StockList() {
         setLoading(true);
 
         const response = await fetch("/api/stock");
-    
 
         if (!response.ok) {
           throw new Error(`Api not found ${response.status} ${response.statusText}`);
@@ -53,23 +53,25 @@ export default function StockList() {
           <tbody>
             {stocks.map((s) => (
               <tr key={s.id ?? s.symbol}>
-                <td>{s.symbol}</td>
+                <td>
+                  <Link to={`/stocks/${s.symbol}/comments`}>{s.symbol}</Link>
+                </td>
                 <td>{s.companyName}</td>
                 <td>{s.industry}</td>
-               <td>
-  {s.comments && s.comments.length > 0 ? (
-    <ul>
-      {s.comments.map((c, idx) => (
-        <li key={idx}>
-          <strong>{c.title}</strong>
-          <div>{c.content}</div>
-        </li>
-      ))}
-    </ul>
-  ) : (
-    <em>No comments</em>
-  )}
-</td>
+                <td>
+                  {s.comments && s.comments.length > 0 ? (
+                    <ul>
+                      {s.comments.map((c) => (
+                        <li key={c.id ?? `${c.title}-${c.createdOn ?? ""}`}>
+                          <strong>{c.title}</strong>
+                          <div>{c.content}</div>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <em>No comments</em>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
