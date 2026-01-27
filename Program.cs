@@ -49,6 +49,20 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+// ===================== CORS =====================
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("DevCors", policy =>
+    {
+        policy
+            .WithOrigins(
+                "http://localhost:5173" // Vite dev server
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 // ===================== DB =====================
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
@@ -134,7 +148,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors("DevCors");  
 app.UseAuthentication();
 app.UseAuthorization();
 

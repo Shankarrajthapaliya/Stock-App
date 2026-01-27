@@ -33,11 +33,12 @@ namespace web.Controllers
          if (!ModelState.IsValid){
                return BadRequest(ModelState);
          }
-         var alreadyExists =  _userManager.FindByNameAsync(dto.UserName);
-         if (alreadyExists == null)
-            {
-                return BadRequest(new { message = "Username already taken." });
-            }
+         var alreadyExists = await _userManager.FindByNameAsync(dto.UserName);
+      if (alreadyExists != null)
+      {
+    return BadRequest(new { message = "Username already taken." });
+       }
+
          var user = new IdentityUser();
          user.UserName = dto.UserName;
          user.Email = dto.Email;
