@@ -55,5 +55,13 @@ namespace web.Controllers
             if (!ok) return NotFound();
             return NoContent();
         }
+       
+       [HttpGet("symbol/{symbol}")]
+        public async Task<IActionResult> FindBySymbol(string symbol)
+        {
+            var comment = await _commentService.GetBySymbolAsync(symbol) ;
+            return Ok(comment);
+        }
+       
     }
 }

@@ -12,8 +12,8 @@ using web.Models.Data;
 namespace web.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20260112223057_InitialUnifiedIdentity")]
-    partial class InitialUnifiedIdentity
+    [Migration("20260121214841_AddIdentityTables")]
+    partial class AddIdentityTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -291,14 +291,8 @@ namespace web.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<decimal>("LastDiv")
-                        .HasColumnType("numeric(18,2)");
-
                     b.Property<long>("MarketCap")
                         .HasColumnType("bigint");
-
-                    b.Property<decimal>("Purchase")
-                        .HasColumnType("numeric(18,2)");
 
                     b.Property<string>("Symbol")
                         .IsRequired()

@@ -18,11 +18,6 @@ namespace web.Models
          public string Symbol{get; set;} = string.Empty;
         public string CompanyName { get; set; } = string.Empty;
 
-        [Column(TypeName = "numeric(18,2)")]
-        public decimal Purchase { get; set;}
-
-        [Column(TypeName = "numeric(18,2)")]
-        public decimal LastDiv {get; set;}
         public long MarketCap{get; set;}
 
         public string Industry { get; set; } = string.Empty;

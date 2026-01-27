@@ -20,8 +20,6 @@ namespace web.Tests
                 Symbol = null,
                 CompanyName = "Tesla",
                 MarketCap = 2000000,
-                LastDiv = 2,
-                Purchase = 23,
                 Industry = null
 
             };
@@ -41,8 +39,6 @@ namespace web.Tests
                       Symbol = "TSLA",
                 CompanyName = "Tesla",
                 MarketCap = 2000000,
-                LastDiv = 2,
-                Purchase = 23,
                 Industry = "Technology"
             };
 

@@ -13,5 +13,6 @@ namespace web.Interface
         Task<CommentDTO?> GetByIdAsync(int id);
         Task<Comment?> CreateAsync(CreateCommentDTO dto); // uses dto.Symbol
         Task<bool> DeleteAsync(int id);
+        Task<List<CommentDTO>> GetBySymbolAsync(string symbol);
     }
 }

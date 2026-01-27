@@ -52,5 +52,11 @@ namespace web.Services
         {
             return await _commentRepo.DeleteAsync(id);
         }
+
+        public async Task<List<CommentDTO>> GetBySymbolAsync(string symbol)
+        {
+            var comment = await _commentRepo.GetBySymbol(symbol);
+            return comment ;
+        }
     }
 }

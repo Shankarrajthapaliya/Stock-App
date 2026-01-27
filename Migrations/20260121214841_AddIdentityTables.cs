@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace web.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialUnifiedIdentity : Migration
+    public partial class AddIdentityTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -59,8 +59,6 @@ namespace web.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Symbol = table.Column<string>(type: "text", nullable: false),
                     CompanyName = table.Column<string>(type: "text", nullable: false),
-                    Purchase = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
-                    LastDiv = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
                     MarketCap = table.Column<long>(type: "bigint", nullable: false),
                     Industry = table.Column<string>(type: "text", nullable: false)
                 },

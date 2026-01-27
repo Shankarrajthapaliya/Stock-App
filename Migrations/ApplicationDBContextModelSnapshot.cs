@@ -288,14 +288,8 @@ namespace web.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<decimal>("LastDiv")
-                        .HasColumnType("numeric(18,2)");
-
                     b.Property<long>("MarketCap")
                         .HasColumnType("bigint");
-
-                    b.Property<decimal>("Purchase")
-                        .HasColumnType("numeric(18,2)");
 
                     b.Property<string>("Symbol")
                         .IsRequired()

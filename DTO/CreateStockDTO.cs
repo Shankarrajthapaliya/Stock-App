@@ -19,13 +19,6 @@ namespace web.Controllers.DTO
         [MaxLength(100, ErrorMessage ="No more than 100 characters")]
     public string CompanyName { get; set; } = string.Empty;
    [Required]
- 
-    public decimal Purchase { get; set; }
-     [Required]
-       
-    public decimal LastDiv { get; set; }
-    [Required]
-     
     public long MarketCap { get; set; }
    [Required]
         [MinLength(1,ErrorMessage ="At least 20 characters")]
@@ -34,9 +27,9 @@ namespace web.Controllers.DTO
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-      if (Purchase < LastDiv)
+      if (MarketCap < 10000)
       {
-        yield return  new ValidationResult("Last Div can't be greater than Purchase amount", new[] {nameof(Purchase), nameof(LastDiv)});
+        yield return  new ValidationResult("Last Div can't be greater than Purchase amount", new[] {nameof(MarketCap)});
       }
       
         }

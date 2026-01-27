@@ -75,9 +75,9 @@ namespace web.Repo
 
         public async Task<IEnumerable<StockDTO>> GetByIndustry(string industry)
         {
-              var getByIndustry = await _context.Stocks.Include(c => c.Comments).ToListAsync();
-              var returnByIndustry = getByIndustry.Where(s => s.Industry == industry).Select(s => s.toStockDTO())  ;
-       return returnByIndustry  ;
+              var getByIndustry = await _context.Stocks.Where(s => s.Industry == industry).Include(c => c.Comments).Select(s => s.toStockDTO()) .ToListAsync();
+            
+       return getByIndustry  ;
         }
 
         public async Task<Stock?> UpdateStock(int id, CreateStockDTO stockToUpdate)
@@ -89,9 +89,7 @@ namespace web.Repo
             }
             toUpdate.CompanyName = stockToUpdate.CompanyName;
             toUpdate.Industry = stockToUpdate.Industry;
-            toUpdate.LastDiv = stockToUpdate.LastDiv;
             toUpdate.MarketCap = stockToUpdate.MarketCap;
-            toUpdate.Purchase = stockToUpdate.Purchase;
             toUpdate.Symbol = stockToUpdate.Symbol;
 
             await _context.SaveChangesAsync();

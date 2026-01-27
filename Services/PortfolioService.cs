@@ -30,9 +30,9 @@ namespace web.Services
 
          var userPresent = await _usermanager.FindByIdAsync(userID);
 
-         if (userPresent == null)
+         if (userPresent is null)
             {
-                return null;
+               throw new InvalidOperationException("Portfolio not found");
             }
              return stock ;
         }
