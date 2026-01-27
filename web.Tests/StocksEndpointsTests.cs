@@ -32,9 +32,7 @@ namespace web.Tests
             CompanyName = "Test Company",
             Symbol = "TST",
             Industry = "Testing",
-            LastDiv = 123,
             MarketCap = 1000000,
-            Purchase = 10500
         };
 
         
@@ -82,9 +80,8 @@ public async Task Post_CreateStock_WithValidToken_ReturnsSuccess()
         CompanyName = "Auth Company",
         Symbol = "AUTH",
         Industry = "Testing",
-        LastDiv = 0.5m,
         MarketCap = 555,
-        Purchase = 12.99m
+        
     };
 
     var response = await _client.PostAsJsonAsync("/api/stock", dto);

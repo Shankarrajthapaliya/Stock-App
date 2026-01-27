@@ -37,8 +37,6 @@ namespace web.Tests
                     Symbol = "AAPL",
                     Industry = "Tech",
                     MarketCap = 1000,
-                    Purchase = 10,
-                    LastDiv = 1,
                     Comments = new List<Comment?>()
                 },
                 new Stock
@@ -48,8 +46,6 @@ namespace web.Tests
                     Symbol = "TSLA",
                     Industry = "Auto",
                     MarketCap = 2000,
-                    Purchase = 20,
-                    LastDiv = 0,
                     Comments = new List<Comment?>()
                 }
                 };
@@ -88,7 +84,6 @@ repoMock.VerifyNoOtherCalls();
                 Symbol = "SA",
                 CompanyName = "Surya",
                 MarketCap = 200000,
-                LastDiv = 200,
                 Industry = "Food"
                 
             };
@@ -99,8 +94,6 @@ repoMock.VerifyNoOtherCalls();
                 Symbol = dto.Symbol,
                 Industry = dto.Industry,
                 MarketCap = dto.MarketCap,
-                Purchase = dto.Purchase,
-                LastDiv = dto.LastDiv,
                 Comments = new List<Comment?>()
         };
       

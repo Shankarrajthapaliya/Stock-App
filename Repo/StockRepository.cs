@@ -89,9 +89,7 @@ namespace web.Repo
             }
             toUpdate.CompanyName = stockToUpdate.CompanyName;
             toUpdate.Industry = stockToUpdate.Industry;
-            toUpdate.LastDiv = stockToUpdate.LastDiv;
             toUpdate.MarketCap = stockToUpdate.MarketCap;
-            toUpdate.Purchase = stockToUpdate.Purchase;
             toUpdate.Symbol = stockToUpdate.Symbol;
 
             await _context.SaveChangesAsync();

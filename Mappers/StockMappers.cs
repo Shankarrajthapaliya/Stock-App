@@ -18,8 +18,7 @@ namespace web.Mappers
     {
         Symbol = stockModel.Symbol,
         CompanyName = stockModel.CompanyName,
-        Purchase = stockModel.Purchase,
-        LastDiv = stockModel.LastDiv,
+
         MarketCap = stockModel.MarketCap,
         Industry = stockModel.Industry,
 
@@ -44,8 +43,7 @@ namespace web.Mappers
             addStock.Symbol = stockToAdd.Symbol;
            
            addStock.CompanyName = stockToAdd.CompanyName;
-             addStock.Purchase = stockToAdd.Purchase;
-            addStock.LastDiv = stockToAdd.LastDiv;
+            
             addStock.MarketCap = stockToAdd.MarketCap;
             addStock.Industry = stockToAdd.Industry;
 
@@ -63,8 +61,7 @@ namespace web.Mappers
            
          
           stocktoSend.CompanyName = stockModel.CompanyName;
-          stocktoSend.Purchase = stockModel.Purchase;
-           stocktoSend.LastDiv = stockModel.LastDiv;
+          
             stocktoSend.MarketCap = stockModel.MarketCap;
               stocktoSend.Industry = stockModel.Industry;
 
